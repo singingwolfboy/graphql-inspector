@@ -1,7 +1,8 @@
 import * as simplegit from 'simple-git/promise';
-import {buildSchema, buildClientSchema} from 'graphql';
+import {buildSchema, buildClientSchema, printSchema, parse} from 'graphql';
+import {SchemaLoader, Source} from 'graphql-config';
 
-import {SchemaHandler} from './loader';
+import {SchemaHandler, SchemaLoader as _SchemaLoader} from './loader';
 
 function isGit(pointer: string): boolean {
   return pointer.toLowerCase().startsWith('git:');
@@ -53,4 +54,21 @@ export const fromGit: SchemaHandler = function fromGit(pointer) {
       throw new Error('Unable to build schema from git');
     };
   }
+};
+
+export const GitLoader: SchemaLoader = {
+  loaderId() {
+    return 'git-loader';
+  },
+  async canLoad(pointer) {
+    return typeof pointer === 'string' && !!fromGit(pointer);
+  },
+  async load(pointer) {
+    const load: _SchemaLoader = fromGit(pointer) as any;
+
+    return new Source({
+      location: pointer,
+      document: parse(printSchema(await load())),
+    });
+  },
 };

@@ -1,5 +1,9 @@
 import {GraphQLSchema, isSchema, DocumentNode, buildASTSchema} from 'graphql';
-import {loadSchema as useSchema} from 'graphql-toolkit';
+import {loadSchemaUsingLoaders} from '@graphql-toolkit/core';
+import {UrlLoader} from '@graphql-toolkit/url-loader';
+import {GraphQLFileLoader} from '@graphql-toolkit/graphql-file-loader';
+import {JsonFileLoader} from '@graphql-toolkit/json-file-loader';
+import {CodeFileLoader} from '@graphql-toolkit/code-file-loader';
 
 import {fromGithub} from './from-github';
 import {fromGit} from './from-git';
@@ -20,7 +24,16 @@ export async function loadSchema(
     return useGit();
   }
 
-  const resolved = await useSchema(pointer, extra || {});
+  const resolved = await loadSchemaUsingLoaders(
+    [
+      new UrlLoader(),
+      new GraphQLFileLoader(),
+      new JsonFileLoader(),
+      new CodeFileLoader(),
+    ],
+    pointer,
+    extra || {},
+  );
 
   if (isSchema(resolved)) {
     return resolved;

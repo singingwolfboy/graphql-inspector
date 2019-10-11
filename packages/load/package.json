@@ -30,8 +30,12 @@
     "graphql": "^0.13.0 || ^14.0.0"
   },
   "dependencies": {
-    "graphql-tag-pluck": "0.8.6",
-    "graphql-toolkit": "0.5.18",
+    "@graphql-toolkit/core": "0.6.1-alpha-cee1e98.4+cee1e98",
+    "@graphql-toolkit/graphql-file-loader": "0.6.1-alpha-cee1e98.4+cee1e98",
+    "@graphql-toolkit/json-file-loader": "0.6.1-alpha-cee1e98.4+cee1e98",
+    "@graphql-toolkit/url-loader": "0.6.1-alpha-cee1e98.4+cee1e98",
+    "@graphql-toolkit/code-file-loader": "0.6.1-alpha-cee1e98.4+cee1e98",
+    "graphql-config": "3.0.0-alpha.13",
     "node-fetch": "2.6.0",
     "simple-git": "1.126.0"
   },
